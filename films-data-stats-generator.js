@@ -1,3 +1,4 @@
+import moment from 'moment';
 export class FilmsDataStatsGenerator {
 
     constructor(filmsApiService) {
@@ -11,6 +12,19 @@ export class FilmsDataStatsGenerator {
     */
     async getBestRatedFilm(directorName) {
         //TODO Implement...
+
+        const films = await this.filmsApiService.getFilms();
+        const directorFilms = films.filter(film => film.directorName === directorName);
+        const bestRatedFilm = directorFilms.reduce((bestFilm, currentFilm) => {
+            if (currentFilm.rating > bestFilm.rating) {
+                return currentFilm;
+            }
+            return bestFilm;
+        }
+        , { rating: 0 });
+        return bestRatedFilm.name;
+
+
     }
 
     /**
@@ -18,6 +32,28 @@ export class FilmsDataStatsGenerator {
     */
    async getDirectorWithMostFilms() {
         //TODO Implement...
+        // Retrieves the name of the director who has directed the most films in the CodeScreen Film service.
+        const films = await this.filmsApiService.getFilms();
+        const directors = films.map(film => film.directorName);
+        const directorCount = directors.reduce((directorCount, currentDirector) => {
+            if (directorCount[currentDirector]) {
+                directorCount[currentDirector]++;
+            } else {
+                directorCount[currentDirector] = 1;
+            }
+            return directorCount;
+        }
+        , {});
+        const maxDirector = Object.keys(directorCount).reduce((maxDirector, currentDirector) => {
+            if (directorCount[currentDirector] > directorCount[maxDirector]) {
+                return currentDirector;
+            }
+            return maxDirector;
+        }
+        , ' ');
+        return maxDirector;
+
+      
     }
 
     /**
@@ -26,6 +62,17 @@ export class FilmsDataStatsGenerator {
     */
    async getAverageRating(directorName) {
         //TODO Implement...
+ 
+        const films = await this.filmsApiService.getFilms();
+        const directorFilms = films.filter(film => film.directorName === directorName);
+        const averageRating = directorFilms.reduce((averageRating, currentFilm) => {
+            return averageRating + currentFilm.rating;
+        }
+        , 0) / directorFilms.length;
+        return averageRating.toFixed(1);
+
+       
+
     }
 
     /**
@@ -64,6 +111,28 @@ export class FilmsDataStatsGenerator {
     */
    async getShortestNumberOfDaysBetweenFilmReleases(directorName) {
         //TODO Implement...
+
+        const films = await this.filmsApiService.getFilms();
+        const directorFilms = films.filter(film => film.directorName === directorName);
+        const directorFilmsDates = directorFilms.map(film => moment(film.releaseDate));
+        const directorFilmsDatesDiff = directorFilmsDates.map((date, index) => {
+            if (index === 0) {
+                return 0;
+            }
+            return date.diff(directorFilmsDates[index - 1], 'days');
+        }
+        );
+        const shortestNumberOfDays = directorFilmsDatesDiff.reduce((shortestNumberOfDays, currentNumberOfDays) => {
+            if (currentNumberOfDays < shortestNumberOfDays) {
+                return currentNumberOfDays;
+            }
+            return shortestNumberOfDays;
+        }
+        , Infinity);
+        return shortestNumberOfDays;
+    
+    
+      
     }   
     
 }

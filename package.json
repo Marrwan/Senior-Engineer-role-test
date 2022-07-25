@@ -16,6 +16,8 @@
   },
   "type": "module",
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "moment": "^2.29.4"
   }
 }

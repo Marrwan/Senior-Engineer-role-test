@@ -1,3 +1,4 @@
+import axios from "axios";
 export class FilmsAPIService {
 
     static filmsEndpointUrl = "https://app.codescreen.com/api/assessments/films";
@@ -9,6 +10,14 @@ export class FilmsAPIService {
     // Retrieves the data for all films by calling the https://app.codescreen.com/api/assessments/films endpoint.
     async getFilms() {
         //TODO Implement...
+        // Retrieves the data for all films by calling the https://app.codescreen.com/api/assessments/films endpoint.
+        const response = await axios.get(FilmsAPIService.filmsEndpointUrl, {
+            headers: {
+                Authorization: `Bearer ${FilmsAPIService.apiToken}`
+            }
+        });
+        return response.data;
+
     }
 
 }
