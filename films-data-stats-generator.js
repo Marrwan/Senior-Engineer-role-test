@@ -16,6 +16,7 @@ export class FilmsDataStatsGenerator {
         const films = await this.filmsApiService.getFilms();
         const directorFilms = films.filter(film => film.directorName === directorName);
         const bestRatedFilm = directorFilms.reduce((bestFilm, currentFilm) => {
+       
             if (currentFilm.rating > bestFilm.rating) {
                 return currentFilm;
             }
@@ -35,7 +36,7 @@ export class FilmsDataStatsGenerator {
         // Retrieves the name of the director who has directed the most films in the CodeScreen Film service.
         const films = await this.filmsApiService.getFilms();
         const directors = films.map(film => film.directorName);
-        const directorCount = directors.reduce((directorCount, currentDirector) => {
+        const directorCounts = directors.reduce((directorCount, currentDirector) => {
             if (directorCount[currentDirector]) {
                 directorCount[currentDirector]++;
             } else {
@@ -44,14 +45,12 @@ export class FilmsDataStatsGenerator {
             return directorCount;
         }
         , {});
-        const maxDirector = Object.keys(directorCount).reduce((maxDirector, currentDirector) => {
-            if (directorCount[currentDirector] > directorCount[maxDirector]) {
-                return currentDirector;
-            }
-            return maxDirector;
-        }
-        , ' ');
-        return maxDirector;
+        // return directorCounts;
+        // return key in directorCounts with highest value
+        // return Object.values(Math.max(directorCounts));
+        const max = Object.values(directorCounts).reduce((a, b) => { return Math.max(a, b) });
+     
+         return String(Object.keys(directorCounts).filter(key => directorCounts[key] === max));
 
       
     }
@@ -69,7 +68,7 @@ export class FilmsDataStatsGenerator {
             return averageRating + currentFilm.rating;
         }
         , 0) / directorFilms.length;
-        return averageRating.toFixed(1);
+        return Number(averageRating.toFixed(1));
 
        
 
@@ -112,24 +111,26 @@ export class FilmsDataStatsGenerator {
    async getShortestNumberOfDaysBetweenFilmReleases(directorName) {
         //TODO Implement...
 
+        // getShortestNumberOfDaysBetweenFilmReleases
+        // Should return 29 for Ridley Scott
+        // Should return 147 for Christopher Nolan
+
         const films = await this.filmsApiService.getFilms();
         const directorFilms = films.filter(film => film.directorName === directorName);
         const directorFilmsDates = directorFilms.map(film => moment(film.releaseDate));
-        const directorFilmsDatesDiff = directorFilmsDates.map((date, index) => {
-            if (index === 0) {
-                return 0;
+        const shortestNumberOfDaysBetweenFilmReleases = directorFilmsDates.reduce((shortestNumberOfDaysBetweenFilmReleases, currentFilmDate) => {
+            const shortestNumberOfDaysBetweenFilmReleasesDate = moment(shortestNumberOfDaysBetweenFilmReleases);
+            const currentFilmDateDiff = moment(currentFilmDate).diff(shortestNumberOfDaysBetweenFilmReleasesDate, 'days');
+            if (currentFilmDateDiff < shortestNumberOfDaysBetweenFilmReleases) {
+                return currentFilmDateDiff;
             }
-            return date.diff(directorFilmsDates[index - 1], 'days');
+            return shortestNumberOfDaysBetweenFilmReleases;
         }
-        );
-        const shortestNumberOfDays = directorFilmsDatesDiff.reduce((shortestNumberOfDays, currentNumberOfDays) => {
-            if (currentNumberOfDays < shortestNumberOfDays) {
-                return currentNumberOfDays;
-            }
-            return shortestNumberOfDays;
-        }
-        , Infinity);
-        return shortestNumberOfDays;
+        , 0);
+        return shortestNumberOfDaysBetweenFilmReleases;
+
+
+
     
     
       

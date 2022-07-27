@@ -6,7 +6,7 @@ import {FilmsDataStatsGenerator} from './films-data-stats-generator.js';
 const filmsAPIService = new FilmsAPIService();
 
 filmsAPIService.getFilms().then(films => {
-    console.log(films);
+    // console.log(films);
 }
 ).catch(error => {
     console.log(error);
@@ -16,43 +16,56 @@ filmsAPIService.getFilms().then(films => {
 // Create a new instance of the FilmsDataStatsGenerator class.
 const filmsDataStatsGenerator = new FilmsDataStatsGenerator(new FilmsAPIService());
 
-filmsDataStatsGenerator.getBestRatedFilm('Ridley Scott').then(bestRatedFilm => {
-    console.log(`The best rated film directed by George Lucas is ${bestRatedFilm}`);
-}
-).catch(error => {
-    console.log(error);
-}
-);
-
-filmsDataStatsGenerator.getDirectorWithMostFilms().then(directorWithMostFilms => {
-    console.log(`The director with the most films is ${directorWithMostFilms}`);
-}
-).catch(error => {
-    console.log(error);
-}
-);
-
-filmsDataStatsGenerator.getAverageRating('Ridley Scott').then(averageRating => {
-    console.log(`The average rating for films directed by George Lucas is ${averageRating}`);
-}
-).catch(error => {
-    console.log(error);
-}
-);
-
-
-
-
-
-
-
-
-
-
-// film.getFilms().then(data => {
-//     console.log(data);
+// filmsDataStatsGenerator.getBestRatedFilm("Ridley Scott").then(bestRatedFilm => {
+//     console.log(bestRatedFilm);
+//     // console.log(`The best rated film directed by George Lucas is ${bestRatedFilm}`);
 // }
-// ).catch(err => {
-//     console.log(err);
+// ).catch(error => {
+//     console.log(error);
 // }
 // );
+
+filmsDataStatsGenerator.getDirectorWithMostFilms().then(directorWithMostFilms => {
+    // console.log(`The director with the most films is ${directorWithMostFilms}`);
+    console.log(directorWithMostFilms);
+}
+).catch(error => {
+    console.log(error);
+}
+);
+
+// filmsDataStatsGenerator.getAverageRating('Ridley Scott').then(averageRating => {
+//     console.log(`The average rating for films directed by George Lucas is ${averageRating}`);
+// }
+// ).catch(error => {
+//     console.log(error);
+// }
+// );
+
+// // getShortestNumberOfDaysBetweenFilmReleases for Ridley Scott
+// filmsDataStatsGenerator.getShortestNumberOfDaysBetweenFilmReleases('Ridley Scott').then(shortestDays => {
+//     console.log(`The shortest number of days between films directed by George Lucas is ${shortestDays}`);
+// }
+// ).catch(error => {
+//     console.log(error);
+// }
+// );
+
+
+
+
+
+
+
+
+
+
+
+
+// // film.getFilms().then(data => {
+// //     console.log(data);
+// // }
+// // ).catch(err => {
+// //     console.log(err);
+// // }
+// // );
